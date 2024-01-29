@@ -7,7 +7,7 @@ import resources from "./locales/index.js";
 import AuthProvider from "./context/AuthProvider";
 import SocketProvider from "./context/SocketProvider";
 import store from "./slices/index.js";
-// import rollbarConfig from "./rollbarConfig.js";
+import rollbarConfig from "./rollbarConfig.js";
 import FilterProvider from "./context/FilterProvider";
 
 const init = async () => {
@@ -19,7 +19,7 @@ const init = async () => {
   });
 
   return (
-    // <RollbarProvider config={rollbarConfig}>
+    <RollbarProvider config={rollbarConfig}>
       <ErrorBoundary>
         <Provider store={store}>
           <AuthProvider>
@@ -33,7 +33,7 @@ const init = async () => {
           </AuthProvider>
         </Provider>
       </ErrorBoundary>
-    // </RollbarProvider>
+    </RollbarProvider>
   );
 };
 export default init;

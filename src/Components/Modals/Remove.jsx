@@ -9,7 +9,7 @@ import { getchannalIdModal, getIsOpenedModal } from '../../selectors/index.js';
 
 const Remove = () => {
   const { t } = useTranslation();
-  // const rollbar = useRollbar();
+  const rollbar = useRollbar();
   const dispatch = useDispatch();
   const isOpened = useSelector(getIsOpenedModal);
   const channalId = useSelector(getchannalIdModal);
@@ -22,7 +22,7 @@ const Remove = () => {
       dispatch(close());
     } catch (error) {
       toast.error(t('notifications.errorRemoveChannel'));
-      // rollbar.error('RemoveChannel', error);
+      rollbar.error('RemoveChannel', error);
     }
   };
 

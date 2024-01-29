@@ -16,7 +16,7 @@ const Rename = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const socket = useSocket();
-  // const rollbar = useRollbar();
+  const rollbar = useRollbar();
   const inputRef = useRef(null);
   const channalId = useSelector(getchannalIdModal);
   const existingChannels = useSelector(getExistingChannels);
@@ -40,7 +40,7 @@ const Rename = () => {
         dispatch(close());
       } catch (error) {
         toast.error(t('notifications.errorRenameChannel'));
-        // rollbar.error('RenameChannel', error);
+        rollbar.error('RenameChannel', error);
       }
     },
   });
