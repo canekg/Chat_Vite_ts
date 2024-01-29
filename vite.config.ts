@@ -8,11 +8,6 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:5001',
       '/socket.io/': 'http://localhost:5001',
-      // '/api': {
-      //   target: 'http://localhost:5001',
-      //   changeOrigin: true,
-      //   rewrite: (path) => path.replace(/^\/api/, ''),
-      // }
     },
   },
   plugins: [react()],
