@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm install && npm run build",
-    "preview": "vite preview",
+    "build": "npm ci && npm run build",
     "start": "npx start-server -s ./dist"
   },
   "dependencies": {
