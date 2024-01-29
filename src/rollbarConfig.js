@@ -1,6 +1,5 @@
-/* eslint-disable no-undef */
 const rollbarConfig = {
-  accessToken: process.env.ROLLBAR_KEY,
+  accessToken: import.meta.env.ROLLBAR_KEY,
   captureUncaught: true,
   captureUnhandledRejections: true,
   environment: 'production',
