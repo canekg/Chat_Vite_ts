@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -10,12 +10,12 @@ import {
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-import LoginPage from './Components/pages/Login';
-import NotFoundPage from './Components/pages/Empty';
-import SignupPage from './Components/pages/Signup';
-import MainPage from './Components/pages/Main';
-import routes from './routes.js';
-import { useAuth } from './context/AuthProvider';
+import LoginPage from './pages/Login.jsx';
+import NotFoundPage from './pages/Empty.tsx';
+import SignupPage from './pages/Signup.jsx';
+import MainPage from './pages/Main.jsx';
+import routes from '../routes.ts';
+import { useAuth } from '../context/AuthProvider.tsx';
 import 'react-toastify/dist/ReactToastify.css';
 
 // interface IChildren {
@@ -42,15 +42,17 @@ const PrivateRoute = ({ children }) => {
 const LogOut = () => {
   const auth = useAuth();
   const { t } = useTranslation();
-  return auth.user ? <Button onClick={auth.logOut}>{t('logOut')}</Button> : null;
+  return auth.user ? (
+    <Button onClick={auth.logOut}>{t('logOut')}</Button>
+  ) : null;
 };
 
 const App = () => {
   const { t } = useTranslation();
   return (
     <BrowserRouter>
-      <div className="d-flex flex-column h-100">
-        <Navbar className="shadow-sm" expand="lg" bg="white">
+      <div className='d-flex flex-column h-100'>
+        <Navbar className='shadow-sm' expand='lg' bg='white'>
           <Container>
             <Navbar.Brand as={Link} to={routes.home()}>
               {t('mainHeader')}
@@ -61,11 +63,11 @@ const App = () => {
         <Routes>
           <Route
             index
-            element={(
+            element={
               <PrivateRoute>
                 <MainPage />
               </PrivateRoute>
-            )} 
+            }
           />
           <Route path={routes.home()} element={<MainPage />} />
           <Route path={routes.login()} element={<LoginPage />} />
