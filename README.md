@@ -21,4 +21,4 @@ This project contains a version of chat built using React and Redux. The goal of
 - **Styling**: CSS with React-Bootstrap
 - **Error monitoring**: Rollbar
 
-Open **[Chat Slack]()** in your browser to view.
+Open **[Chat Slack](https://chat-vite-ts.onrender.com)** in your browser to view.
