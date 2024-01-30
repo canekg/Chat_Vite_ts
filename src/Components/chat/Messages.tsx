@@ -1,18 +1,34 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useRef, useEffect } from 'react';
-import NewMessegeForm from './NewMessegeForm';
-import { useAuth } from '../../context/AuthProvider';
+import React, { useRef, useEffect } from 'react';
+import NewMessegeForm from './NewMessegeForm.jsx';
+import { useAuth } from '../../context/AuthProvider.jsx';
 import { getChannelsInfo, getCurrentMessages } from '../../selectors/index.js';
 
-const Messages = () => {
-  const messagesRef = useRef(null);
+interface IUser {
+  username: string;
+  password: string;
+}
+
+interface IHeader {
+  Authorization: string;
+}
+
+interface IAuth {
+  logIn?: () => void;
+  user?: IUser;
+  header?: IHeader;
+  logOut?: () => void;
+}
+
+const Messages: React.FC = () => {
+  const messagesRef: React.RefObject<HTMLInputElement> = useRef(null);
   const { channels, currentChannelId } = useSelector(getChannelsInfo);
   const currentChannel = channels.filter((channel) => currentChannelId === channel.id)[0];
   const currentName = currentChannel ? currentChannel.name : '';
   const { t } = useTranslation();
   const currentMesseges = useSelector(getCurrentMessages);
-  const auth = useAuth();
+  const auth: IAuth = useAuth();
   useEffect(() => {
     if (messagesRef.current) {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight;

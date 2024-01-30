@@ -1,16 +1,16 @@
 const apiPath = '/api/v1';
 
-// interface IRoutes {
-//   loginPath: () => string,
-//   home: () => string,
-//   login: () => string,
-//   signup: () => string,
-//   signupPage: () => string,
-//   dataPath: () => string,
-//   notFoundPage: () => string,
-// }
+interface IRoutes {
+  loginPath: () => string;
+  home: () => string;
+  login: () => string;
+  signup: () => string;
+  signupPage: () => string;
+  dataPath: () => string;
+  notFoundPage: () => string;
+}
 
-const routes = {
+const routes: IRoutes = {
   loginPath: () => [apiPath, 'login'].join('/'),
   home: () => '/',
   login: () => '/login',

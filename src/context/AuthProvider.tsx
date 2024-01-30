@@ -1,17 +1,19 @@
 import React, {
-  createContext, useState, useCallback, useMemo, useContext,
+  createContext,
+  useState,
+  useCallback,
+  useMemo,
+  useContext,
+  PropsWithChildren,
 } from 'react';
 import axios from 'axios';
-import routes from '../routes';
+import routes from '../routes.ts';
+
 
 const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
 
-// interface IChildren {
-//   children: React.ReactNode;
-// }
-
-const AuthProvider = ({ children }) => {
+const AuthProvider: React.FC = ({ children }: PropsWithChildren) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
   const currentHeader = JSON.parse(localStorage.getItem('header'));
   const [user, setUser] = useState(currentUser);
@@ -36,13 +38,17 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('header');
   }, []);
 
-  const context = useMemo(() => ({
-    logIn, user, header, logOut,
-  }), [logIn, user, header, logOut]);
+  const context = useMemo(
+    () => ({
+      logIn,
+      user,
+      header,
+      logOut,
+    }),
+    [logIn, user, header, logOut]
+  );
   return (
-    <AuthContext.Provider value={context}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={context}>{children}</AuthContext.Provider>
   );
 };
 

@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+import { IModal } from '../types/state.ts';
 
-const initialState = {
+const initialState: IModal = {
   isOpened: false,
   type: null,
   extra: null,
