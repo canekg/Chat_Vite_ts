@@ -6,10 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
-import { close } from '../../slices/modalSlice';
+import { close } from '../../slices/modalSlice.ts';
 import { useSocket } from '../../context/SocketProvider.jsx';
 import { useFilter } from '../../context/FilterProvider.jsx';
-import { getchannalIdModal, getExistingChannels, getOldNameChannel } from '../../selectors/index.js';
+import {
+  getchannalIdModal,
+  getExistingChannels,
+  getOldNameChannel,
+} from '../../selectors/index.js';
 
 const Rename = () => {
   const filterWords = useFilter();
@@ -30,7 +34,11 @@ const Rename = () => {
         .required(t('validation.emptyField'))
         .min(3, t('validation.minMaxsimSymbols'))
         .max(20, t('validation.minMaxsimSymbols'))
-        .test('is-unique', t('validation.uniqueness'), (value) => !existingChannels.includes(value)),
+        .test(
+          'is-unique',
+          t('validation.uniqueness'),
+          (value) => !existingChannels.includes(value)
+        ),
     }),
     onSubmit: async ({ name }) => {
       const filteredRename = filterWords(name);
@@ -56,27 +64,37 @@ const Rename = () => {
       </Modal.Header>
 
       <Modal.Body>
-        <Form onSubmit={formik.handleSubmit} controlId="name">
+        <Form onSubmit={formik.handleSubmit} controlId='name'>
           <Form.Group>
             <Form.Control
-              type="text"
+              type='text'
               ref={inputRef}
-              id="name"
+              id='name'
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.name}
               disabled={formik.isSubmitting}
-              name="name"
+              name='name'
               isInvalid={formik.errors.name}
             />
-            <Form.Label htmlFor="name" visuallyHidden>{t('modal.channelName')}</Form.Label>
-            <Form.Control.Feedback type="invalid">
+            <Form.Label htmlFor='name' visuallyHidden>
+              {t('modal.channelName')}
+            </Form.Label>
+            <Form.Control.Feedback type='invalid'>
               {formik.errors.name}
             </Form.Control.Feedback>
           </Form.Group>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => dispatch(close())}>{t('modal.send')}</Button>
-            <Button type="submit" variant="primary" disabled={formik.isSubmitting}>{t('modal.cancel')}</Button>
+            <Button variant='secondary' onClick={() => dispatch(close())}>
+              {t('modal.send')}
+            </Button>
+            <Button
+              type='submit'
+              variant='primary'
+              disabled={formik.isSubmitting}
+            >
+              {t('modal.cancel')}
+            </Button>
           </Modal.Footer>
         </Form>
       </Modal.Body>

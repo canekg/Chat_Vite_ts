@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import channelsReducer from './channelsSlice.js';
 import messagesReducer from './messagesSlice.js';
-import modalSlice from './modalSlice.js';
+import modalSlice from './modalSlice.ts';
 
 const store = configureStore({
   reducer: {

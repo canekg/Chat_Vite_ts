@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,16 +7,20 @@ import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
-import { close } from '../../slices/modalSlice';
+import { close } from '../../slices/modalSlice.ts';
 import { useSocket } from '../../context/SocketProvider.jsx';
 import { useFilter } from '../../context/FilterProvider.jsx';
-import { getExistingChannels, getIsOpenedModal } from '../../selectors/index.js';
+import {
+  getExistingChannels,
+  getIsOpenedModal,
+} from '../../selectors/index.js';
 import { setCurrentChannel } from '../../slices/channelsSlice.js';
 
 const Add = () => {
   const filterWords = useFilter();
   const { t } = useTranslation();
   const socket = useSocket();
+  // const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const inputRef = useRef(null);
   const existingChannels = useSelector(getExistingChannels);
   const dispatch = useDispatch();
@@ -39,7 +43,11 @@ const Add = () => {
         .required(t('validation.emptyField'))
         .min(3, t('validation.minMaxsimSymbols'))
         .max(20, t('validation.minMaxsimSymbols'))
-        .test('is-unique', t('validation.uniqueness'), (value) => !existingChannels.includes(value)),
+        .test(
+          'is-unique',
+          t('validation.uniqueness'),
+          (value) => !existingChannels.includes(value)
+        ),
     }),
     validateOnBlur: false,
     validateOnChange: false,
@@ -78,20 +86,26 @@ const Add = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.name}
-              data-testid="input-name"
-              name="name"
-              isInvalid={
-                formik.touched.name && formik.errors.name
-              }
+              data-testid='input-name'
+              name='name'
+              isInvalid={formik.touched.name && formik.errors.name}
             />
             <Form.Label visuallyHidden>{t('modal.channelName')}</Form.Label>
-            <Form.Control.Feedback type="invalid">
-              { formik.errors.name }
+            <Form.Control.Feedback type='invalid'>
+              {formik.errors.name}
             </Form.Control.Feedback>
           </Form.Group>
           <Modal.Footer>
-            <Button variant="secondary" onClick={hendleClose}>{t('modal.send')}</Button>
-            <Button type="submit" variant="primary" disabled={formik.isSubmitting}>{t('modal.cancel')}</Button>
+            <Button variant='secondary' onClick={hendleClose}>
+              {t('modal.send')}
+            </Button>
+            <Button
+              type='submit'
+              variant='primary'
+              disabled={formik.isSubmitting}
+            >
+              {t('modal.cancel')}
+            </Button>
           </Modal.Footer>
         </Form>
       </Modal.Body>

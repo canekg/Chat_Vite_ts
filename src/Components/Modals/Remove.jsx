@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
-import { close } from '../../slices/modalSlice';
+import { close } from '../../slices/modalSlice.ts';
 import { useSocket } from '../../context/SocketProvider.jsx';
 import { getchannalIdModal, getIsOpenedModal } from '../../selectors/index.js';
 
@@ -32,9 +32,11 @@ const Remove = () => {
         <Modal.Title>{t('modal.removeChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">{t('modal.confirmSure')}</p>
-        <div className="d-flex justify-content-end">
-          <Button variant="danger" onClick={handleRemove}>{t('modal.remove')}</Button>
+        <p className='lead'>{t('modal.confirmSure')}</p>
+        <div className='d-flex justify-content-end'>
+          <Button variant='danger' onClick={handleRemove}>
+            {t('modal.remove')}
+          </Button>
         </div>
       </Modal.Body>
     </Modal>

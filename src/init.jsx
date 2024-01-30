@@ -2,7 +2,7 @@ import i18next from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import { Provider } from "react-redux";
 import { Provider as RollbarProvider, ErrorBoundary } from "@rollbar/react";
-import App from "./App.jsx";
+import App from "./Components/App.jsx";
 import resources from "./locales/index.js";
 import AuthProvider from "./context/AuthProvider";
 import SocketProvider from "./context/SocketProvider";

@@ -1,6 +1,6 @@
-import { getChannelsInfo, getExistingChannels, getOldNameChannel } from './channelsSelectors.js';
-import getCurrentMessages from './messagesSelectors.js';
-import { getchannalIdModal, getIsOpenedModal, getTypeModal } from './modalSelectors.js';
+import { getChannelsInfo, getExistingChannels, getOldNameChannel } from './channelsSelectors.ts';
+import getCurrentMessages from './messagesSelectors.ts';
+import { getchannalIdModal, getIsOpenedModal, getTypeModal } from './modalSelectors.ts';
 
 export {
   getChannelsInfo,
