@@ -12,12 +12,12 @@ const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    open: (state, { payload }) => {
+    open: (state: IModal, { payload }) => {
       state.type = payload.type;
       state.isOpened = true;
       state.extra = payload.extra || null;
     },
-    close: (state) => {
+    close: (state: IModal) => {
       state.isOpened = false;
       state.type = null;
       state.extra = null;

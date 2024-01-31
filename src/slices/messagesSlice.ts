@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
-
-import { createSlice } from '@reduxjs/toolkit';
+import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit';
 import { removeChanneFromState } from './channelsSlice';
+import { IMessagesInfo } from '../types/state.ts';
 
-const initialState = {
+const initialState: IMessagesInfo = {
   messages: [],
 };
 
@@ -11,16 +11,16 @@ const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
-    addMessages(state, { payload }) {
+    addMessages(state: IMessagesInfo, { payload }) {
       state.messages.push(payload);
     },
-    setMessagesInitialState(state, { payload }) {
+    setMessagesInitialState(state: IMessagesInfo, { payload }) {
       state.messages = [...payload.messages];
     },
   },
 
-  extraReducers: (builder) => {
-    builder.addCase(removeChanneFromState, (state, { payload }) => {
+  extraReducers: (builder: ActionReducerMapBuilder<IMessagesInfo>) => {
+    builder.addCase(removeChanneFromState, (state: IMessagesInfo, { payload }) => {
       state.messages = state.messages.filter((message) => message.channelId !== payload.id);
     });
   },

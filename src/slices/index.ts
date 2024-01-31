@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import channelsReducer from './channelsSlice.js';
-import messagesReducer from './messagesSlice.js';
+import channelsReducer from './channelsSlice.ts';
+import messagesReducer from './messagesSlice.ts';
 import modalSlice from './modalSlice.ts';
 
 const store = configureStore({
@@ -11,4 +11,6 @@ const store = configureStore({
   },
 });
 
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 export default store;
