@@ -9,17 +9,23 @@ import React, {
 import axios from 'axios';
 import routes from '../routes.ts';
 
+interface AuthContext {
+  logIn: (username: string, password: string) => Promise<void>;
+  user: { token: string, username: string };
+  header: { Authorization: string };
+  logOut: () => void;
+}
 
-const AuthContext = createContext({});
+const AuthContext = createContext({} as AuthContext);
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider: React.FC = ({ children }: PropsWithChildren) => {
-  const currentUser = JSON.parse(localStorage.getItem('user'));
-  const currentHeader = JSON.parse(localStorage.getItem('header'));
+  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+  const currentHeader = JSON.parse(localStorage.getItem('header') || '{}');
   const [user, setUser] = useState(currentUser);
   const [header, setHeader] = useState(currentHeader);
 
-  const logIn = useCallback(async (username, password) => {
+  const logIn = useCallback(async (username: string, password: string) => {
     const { data } = await axios.post(routes.loginPath(), {
       username,
       password,

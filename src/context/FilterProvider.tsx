@@ -1,18 +1,14 @@
 import filter from 'leo-profanity';
-import { createContext, useCallback, useContext } from 'react';
+import React, { PropsWithChildren, createContext, useCallback, useContext } from 'react';
 
 const FilterContext = createContext({});
 export const useFilter = () => useContext(FilterContext);
 
-// interface IChildren {
-//   children: React.ReactNode;
-// }
-
-const FilterProvider = ({ children }) => {
+const FilterProvider = ({ children } : PropsWithChildren) => {
   filter.add(filter.getDictionary('ru'));
   filter.add(filter.getDictionary('en'));
 
-  const filterWord = useCallback((word) => filter.clean(word), []);
+  const filterWord = useCallback((word: string) => filter.clean(word), []);
 
   return <FilterContext.Provider value={filterWord}>{children}</FilterContext.Provider>;
 };
