@@ -1,10 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import React from 'react';
 import routes from '../../routes.ts';
 import empty from '../../assets/404.png';
 
-const EmptyPage: React.FC = () => {
+const EmptyPage = () => {
   const { t } = useTranslation('translation');
   return (
     <div className='text-center w-100'>
