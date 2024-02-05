@@ -7,21 +7,22 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
 import { close } from '../../slices/modalSlice.ts';
-import { useSocket } from '../../context/SocketProvider.jsx';
-import { useFilter } from '../../context/FilterProvider.jsx';
+import { useSocket } from '../../context/SocketContext.ts';
+import { useFilter } from '../../context/FilterContext.ts';
 import {
   getchannalIdModal,
   getExistingChannels,
   getOldNameChannel,
-} from '../../selectors/index.js';
+} from '../../selectors/index.ts';
+import { AppDispatch } from '../../slices/index.ts';
 
 const Rename = () => {
   const filterWords = useFilter();
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const socket = useSocket();
   const rollbar = useRollbar();
-  const inputRef = useRef(null);
+  const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const channalId = useSelector(getchannalIdModal);
   const existingChannels = useSelector(getExistingChannels);
   const oldNameChannel = useSelector(getOldNameChannel);
@@ -48,13 +49,15 @@ const Rename = () => {
         dispatch(close());
       } catch (error) {
         toast.error(t('notifications.errorRenameChannel'));
-        rollbar.error('RenameChannel', error);
+        if (typeof error === 'string') {
+          rollbar.error('RenameChannel', error);
+        }
       }
     },
   });
 
   useEffect(() => {
-    inputRef.current.select();
+    inputRef.current?.select();
   }, []);
 
   return (
@@ -64,7 +67,7 @@ const Rename = () => {
       </Modal.Header>
 
       <Modal.Body>
-        <Form onSubmit={formik.handleSubmit} controlId='name'>
+        <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
             <Form.Control
               type='text'
@@ -75,7 +78,7 @@ const Rename = () => {
               value={formik.values.name}
               disabled={formik.isSubmitting}
               name='name'
-              isInvalid={formik.errors.name}
+              isInvalid={!!formik.errors.name}
             />
             <Form.Label htmlFor='name' visuallyHidden>
               {t('modal.channelName')}

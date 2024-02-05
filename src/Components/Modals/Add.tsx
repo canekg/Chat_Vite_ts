@@ -8,22 +8,22 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useRollbar } from '@rollbar/react';
 import { close } from '../../slices/modalSlice.ts';
-import { useSocket } from '../../context/SocketProvider.jsx';
-import { useFilter } from '../../context/FilterProvider.jsx';
+import { useSocket } from '../../context/SocketContext.ts';
+import { useFilter } from '../../context/FilterContext.ts';
 import {
   getExistingChannels,
   getIsOpenedModal,
-} from '../../selectors/index.js';
-import { setCurrentChannel } from '../../slices/channelsSlice.js';
+} from '../../selectors/index.ts';
+import { setCurrentChannel } from '../../slices/channelsSlice.ts';
+import { AppDispatch } from '../../slices/index.ts';
 
 const Add = () => {
   const filterWords = useFilter();
   const { t } = useTranslation();
   const socket = useSocket();
-  // const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
-  const inputRef = useRef(null);
+  const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const existingChannels = useSelector(getExistingChannels);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const isOpened = useSelector(getIsOpenedModal);
   const rollbar = useRollbar();
   const hendleClose = () => dispatch(close());
@@ -52,7 +52,7 @@ const Add = () => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async ({ name }, { resetForm }) => {
-      const filteredNameChannel = filterWords(name);
+      const filteredNameChannel: string = filterWords(name);
       const newChannel = {
         name: filteredNameChannel,
       };
@@ -62,9 +62,10 @@ const Add = () => {
         toast.success(t('notifications.addChannel'));
         resetForm();
       } catch (error) {
-        console.log(error);
         toast.error(t('notifications.errorAddChannel'));
-        rollbar.error('AddChannel', error);
+        if (typeof error ==='string') {
+          rollbar.error('AddChannel', error);
+        }
       } finally {
         hendleClose();
       }
@@ -88,7 +89,7 @@ const Add = () => {
               value={formik.values.name}
               data-testid='input-name'
               name='name'
-              isInvalid={formik.touched.name && formik.errors.name}
+              isInvalid={!!(formik.touched.name && formik.errors.name)}
             />
             <Form.Label visuallyHidden>{t('modal.channelName')}</Form.Label>
             <Form.Control.Feedback type='invalid'>

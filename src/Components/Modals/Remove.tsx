@@ -4,13 +4,14 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
 import { close } from '../../slices/modalSlice.ts';
-import { useSocket } from '../../context/SocketProvider.jsx';
-import { getchannalIdModal, getIsOpenedModal } from '../../selectors/index.js';
+import { useSocket } from '../../context/SocketContext.ts';
+import { getchannalIdModal, getIsOpenedModal } from '../../selectors/index.ts';
+import { AppDispatch } from '../../slices/index.ts';
 
 const Remove = () => {
   const { t } = useTranslation();
   const rollbar = useRollbar();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const isOpened = useSelector(getIsOpenedModal);
   const channalId = useSelector(getchannalIdModal);
   const socket = useSocket();
@@ -22,7 +23,9 @@ const Remove = () => {
       dispatch(close());
     } catch (error) {
       toast.error(t('notifications.errorRemoveChannel'));
-      rollbar.error('RemoveChannel', error);
+      if (typeof error === 'string') {
+        rollbar.error('RemoveChannel', error);
+      }
     }
   };
 
