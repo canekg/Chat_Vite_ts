@@ -4,14 +4,16 @@ import { Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useAuth } from '../../context/AuthProvider.tsx';
+import { useAuth } from '../../context/AuthContext.ts';
 import avatar from '../../assets/avatar.jpg';
 import routes from '../../routes.ts';
+import { AxiosError } from 'axios';
+import { ILocation, ILocationState } from '../../types/components.ts';
 
 const LoginPage = () => {
   const { t } = useTranslation();
   const auth = useAuth();
-  const location = useLocation();
+  const location: ILocation = useLocation();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -25,18 +27,20 @@ const LoginPage = () => {
     onSubmit: async ({ username, password }) => {
       try {
         await auth.logIn(username, password);
-        const { from } = location.state || {
+        const { from } = location.state as ILocationState || {
           from: { pathname: routes.home() },
         };
         navigate(from);
       } catch (error) {
-        if (error.response.status === 401) {
-          formik.setErrors({
-            username: t('validation.authFailed'),
-            password: t('validation.authFailed'),
-          });
-        } else {
-          toast.error(t('validation.authFailed'));
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            formik.setErrors({
+              username: t('validation.authFailed'),
+              password: t('validation.authFailed'),
+            });
+          } else {
+            toast.error(t('validation.authFailed'));
+          }
         }
       }
     },
@@ -69,7 +73,7 @@ const LoginPage = () => {
                     onChange={formik.handleChange}
                     value={formik.values.username}
                     isInvalid={
-                      formik.touched.username && formik.errors.username
+                      !!(formik.touched.username && formik.errors.username)
                     }
                   />
                   <Form.Label htmlFor='username'>{t('username')}</Form.Label>
@@ -84,7 +88,7 @@ const LoginPage = () => {
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     isInvalid={
-                      formik.touched.password && formik.errors.password
+                      !!(formik.touched.password && formik.errors.password)
                     }
                   />
                   <Form.Label>{t('password')}</Form.Label>
