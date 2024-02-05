@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
-import { IChannelsInfo } from '../types/state.ts';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { IChannelsInfo, IDataChannels, IСhannels } from '../types/state.ts';
 
 const initialState: IChannelsInfo = {
   channels: [],
@@ -12,26 +12,32 @@ const channelsSlice = createSlice({
   name: 'channelsInfo',
   initialState,
   reducers: {
-    setChannelsInitialState(state: IChannelsInfo, { payload }) {
-      state.channels = [...payload.channels];
-      state.currentChannelId = payload.currentChannelId;
+    setChannelsInitialState(
+      state: IChannelsInfo,
+      action: PayloadAction<IDataChannels>
+    ) {
+      state.channels = [...action.payload.channels];
+      state.currentChannelId = action.payload.currentChannelId;
     },
-    setCurrentChannel(state: IChannelsInfo, { payload }) {
-      state.currentChannelId = payload;
+    setCurrentChannel(state: IChannelsInfo, action: PayloadAction<number>) {
+      state.currentChannelId = action.payload;
     },
-    addChannel(state: IChannelsInfo, { payload }) {
-      state.channels.push(payload);
+    addChannel(state: IChannelsInfo, action: PayloadAction<IСhannels>) {
+      state.channels.push(action.payload);
     },
-    removeChanneFromState(state: IChannelsInfo, { payload }) {
-      if (state.currentChannelId === payload.id) state.currentChannelId = defaultChannelId;
-      state.channels = state.channels.filter((channel) => channel.id !== payload.id);
+    removeChanneFromState(state: IChannelsInfo, action: PayloadAction<{ id: number }>) {
+      if (state.currentChannelId === action.payload.id)
+        state.currentChannelId = defaultChannelId;
+      state.channels = state.channels.filter(
+        (channel) => channel.id !== action.payload.id
+      );
     },
-    renameChannelFromState(state: IChannelsInfo, { payload }) {
+    renameChannelFromState(state: IChannelsInfo, action: PayloadAction<IСhannels>) {
       state.channels = state.channels.map((channel) => {
-        if (channel.id === payload.id) {
+        if (channel.id === action.payload.id) {
           return {
             ...channel,
-            name: payload.name,
+            name: action.payload.name,
           };
         }
         return channel;
@@ -42,6 +48,9 @@ const channelsSlice = createSlice({
 
 export const {
   setChannelsInitialState,
-  setCurrentChannel, addChannel, removeChanneFromState, renameChannelFromState,
+  setCurrentChannel,
+  addChannel,
+  removeChanneFromState,
+  renameChannelFromState,
 } = channelsSlice.actions;
 export default channelsSlice.reducer;

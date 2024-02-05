@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
-import { IModal } from '../types/state.ts';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { IModal, IExtra, IModals } from '../types/state.ts';
 
 const initialState: IModal = {
   isOpened: false,
@@ -12,10 +12,10 @@ const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    open: (state: IModal, { payload }) => {
-      state.type = payload.type;
+    open: (state: IModal, action: PayloadAction<{type: keyof IModals | null; extra?: IExtra}>) => {
+      state.type = action.payload.type;
       state.isOpened = true;
-      state.extra = payload.extra || null;
+      state.extra = action.payload.extra || null;
     },
     close: (state: IModal) => {
       state.isOpened = false;
