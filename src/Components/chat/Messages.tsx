@@ -1,34 +1,18 @@
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import React, { useRef, useEffect } from 'react';
-import NewMessegeForm from './NewMessegeForm.jsx';
-import { useAuth } from '../../context/AuthProvider.jsx';
-import { getChannelsInfo, getCurrentMessages } from '../../selectors/index.js';
+import NewMessegeForm from './NewMessegeForm.tsx';
+import { useAuth } from '../../context/AuthContext.ts';
+import { getChannelsInfo, getCurrentMessages } from '../../selectors/index.ts';
 
-interface IUser {
-  username: string;
-  password: string;
-}
-
-interface IHeader {
-  Authorization: string;
-}
-
-interface IAuth {
-  logIn?: () => void;
-  user?: IUser;
-  header?: IHeader;
-  logOut?: () => void;
-}
-
-const Messages: React.FC = () => {
-  const messagesRef: React.RefObject<HTMLInputElement> = useRef(null);
+const Messages = () => {
+  const messagesRef: React.RefObject<HTMLDivElement> = useRef(null);
   const { channels, currentChannelId } = useSelector(getChannelsInfo);
   const currentChannel = channels.filter((channel) => currentChannelId === channel.id)[0];
   const currentName = currentChannel ? currentChannel.name : '';
   const { t } = useTranslation();
   const currentMesseges = useSelector(getCurrentMessages);
-  const auth: IAuth = useAuth();
+  const auth = useAuth();
   useEffect(() => {
     if (messagesRef.current) {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
@@ -37,7 +21,7 @@ const Messages: React.FC = () => {
 
   const listMessages = currentMesseges.map((message) => (
     <div
-      className={message.username === auth.user.username ? 'text-break mb-2 bg-light' : 'text-break mb-2'}
+      className={message.username === auth.user?.username ? 'text-break mb-2 bg-light' : 'text-break mb-2'}
       key={message.id}
     >
       <b>

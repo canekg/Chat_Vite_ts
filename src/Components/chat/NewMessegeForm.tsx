@@ -4,15 +4,15 @@ import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { useSelector } from 'react-redux';
 import { useRef, useEffect } from 'react';
-import SendMessageIcon from '../icons/SendMessageIcon';
-import { useAuth } from '../../context/AuthProvider';
-import { useSocket } from '../../context/SocketProvider';
-import { useFilter } from '../../context/FilterProvider';
-import { getChannelsInfo } from '../../selectors/index.js';
+import SendMessageIcon from '../icons/SendMessageIcon.tsx';
+import { useAuth } from '../../context/AuthContext.ts';
+import { useSocket } from '../../context/SocketContext.ts';
+import { useFilter } from '../../context/FilterContext.ts';
+import { getChannelsInfo } from '../../selectors/index.ts';
 
 const NewMessegeForm = () => {
   const filterWords = useFilter();
-  const inputRef = useRef(null);
+  const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const { t } = useTranslation();
   const auth = useAuth();
   const socket = useSocket();
@@ -21,12 +21,14 @@ const NewMessegeForm = () => {
     initialValues: { messageBody: '' },
     onSubmit: ({ messageBody }, { resetForm }) => {
       try {
+        if (currentChannelId !== null && auth.user !== null) {
         socket.newMessage({
           body: filterWords(messageBody),
           channelId: currentChannelId,
           username: auth.user.username,
         });
         resetForm();
+      }
       } catch (err) {
         console.error(err);
       }
@@ -42,7 +44,7 @@ const NewMessegeForm = () => {
   }, [currentChannelId]);
 
   useEffect(() => {
-    if (formik.values.messageBody === '') {
+    if (formik.values.messageBody === '' && inputRef.current !== null) {
       inputRef.current.focus();
     }
   }, [formik.values.messageBody]);

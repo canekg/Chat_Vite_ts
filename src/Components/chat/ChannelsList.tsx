@@ -1,10 +1,18 @@
-import React from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { IСhannels } from '../../types/state.ts';
+
+interface IChannelsList {
+  channels: IСhannels[];
+  currentChannelId: number | null;
+  handleChannelClick: (id: number) => void;
+  handleRemoveChannel: (id: number) => void;
+  handleRenameChannel: (id: number) => void;
+}
 
 const ChannelsList = ({
   channels, currentChannelId, handleChannelClick, handleRemoveChannel, handleRenameChannel,
-}) => {
+}: IChannelsList) => {
   const { t } = useTranslation();
 
   return (

@@ -1,24 +1,25 @@
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import ChannelsList from './ChannelsList';
-import ChannelIcon from '../icons/ChannelIcon.jsx';
-import { setCurrentChannel } from '../../slices/channelsSlice';
+import ChannelsList from './ChannelsList.tsx';
+import ChannelIcon from '../icons/ChannelIcon.tsx';
+import { setCurrentChannel } from '../../slices/channelsSlice.ts';
 import { open } from '../../slices/modalSlice.ts';
-import { getChannelsInfo } from '../../selectors/index.js';
+import { getChannelsInfo } from '../../selectors/index.ts';
+import type { AppDispatch } from '../../slices/index.ts';
 
 const Channels = () => {
-  const channelsListRef = useRef(null);
-  const addButtonRef = useRef(null);
+  const channelsListRef: React.RefObject<HTMLUListElement> = useRef(null);
+  const addButtonRef: React.RefObject<HTMLButtonElement> = useRef(null);
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { channels, currentChannelId } = useSelector(getChannelsInfo);
 
-  const handleChannelClick = (id) => dispatch(setCurrentChannel(id));
+  const handleChannelClick = (id: number) => dispatch(setCurrentChannel(id));
   const handleAddChannel = () => dispatch(open({ type: 'addChannel' }));
-  const handleRemoveChannel = (id) =>
+  const handleRemoveChannel = (id: number) =>
     dispatch(open({ type: 'removeChannel', extra: { channalId: id } }));
-  const handleRenameChannel = (id) =>
+  const handleRenameChannel = (id: number) =>
     dispatch(open({ type: 'renameChannel', extra: { channalId: id } }));
 
   return (
