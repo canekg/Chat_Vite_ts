@@ -1,4 +1,4 @@
-import React from 'react';
+import { PropsWithChildren } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -10,27 +10,17 @@ import {
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-import LoginPage from './pages/Login.jsx';
+import LoginPage from './pages/Login.tsx';
 import NotFoundPage from './pages/Empty.tsx';
-import SignupPage from './pages/Signup.jsx';
-import MainPage from './pages/Main.jsx';
+import SignupPage from './pages/Signup.tsx';
+import MainPage from './pages/Main.tsx';
 import routes from '../routes.ts';
-import { useAuth } from '../context/AuthProvider.tsx';
+import { useAuth } from '../context/AuthContext.ts';
 import 'react-toastify/dist/ReactToastify.css';
+import { ILocation } from '../types/components.ts';
 
-// interface IChildren {
-//   children: React.ReactNode;
-// }
-
-// interface IAuth {
-//   logIn: () => void;
-//   user: string;
-//   header: string;
-//   logOut: () => void;
-// }
-
-const PrivateRoute = ({ children }) => {
-  const location = useLocation();
+const PrivateRoute = ({ children }: PropsWithChildren) => {
+  const location: ILocation = useLocation();
   const auth = useAuth();
   return auth.user ? (
     children
