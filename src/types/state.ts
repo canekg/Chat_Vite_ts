@@ -1,32 +1,38 @@
-interface IExtra {
+export interface IExtra {
   channalId: number;
+}
+
+export interface IModals {
+  addChannel: () => JSX.Element;
+  removeChannel: () => JSX.Element;
+  renameChannel: () => JSX.Element;
 }
 
 export interface IModal {
   extra: IExtra | null;
   isOpened: boolean;
-  type: string | null;
+  type: keyof IModals | null;
 }
 
-interface IСhannels {
+export interface IСhannels {
   id: number;
   name: string;
   removable: boolean;
 }
 
-interface IChannelsInfo {
+export interface IChannelsInfo {
   channels: IСhannels[];
-  currentChannelId: number;
+  currentChannelId: number | null;
 }
 
-interface IMessages {
-  channelId: number;
+export interface IMessages {
+  channelId: number | undefined;
   body: string;
   username: string;
-  id: number;
+  id?: number;
 }
 
-interface IMessagesInfo {
+export interface IMessagesInfo {
   messages: IMessages[];
 }
 
@@ -34,4 +40,8 @@ export interface IState {
   channelsInfo: IChannelsInfo;
   messagesInfo: IMessagesInfo;
   modal: IModal;
+}
+
+export interface IDataChannels extends IChannelsInfo {
+  messages: IMessages[];
 }
